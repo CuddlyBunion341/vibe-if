@@ -5,44 +5,46 @@ module VibeIf
   class Evaluator
     def initialize(context_object)
       @context_object = context_object
-      @openai_client = OpenAI::Client.new(access_token: VibeIf.configuration.openai_api_key)
+      @config = VibeIf.configuration
+      validate_configuration
     end
 
     def evaluate(condition_description)
-      variables_data = extract_variables
+      variables = extract_variables
+      prompt = build_prompt(condition_description, variables)
       
-      prompt = build_prompt(condition_description, variables_data)
-      
-      response = @openai_client.chat(
-        parameters: {
-          model: VibeIf.configuration.model,
-          messages: [{ role: "user", content: prompt }],
-          max_tokens: VibeIf.configuration.max_tokens,
-          temperature: VibeIf.configuration.temperature
-        }
+      response = openai_client.chat.completions.create(
+        model: @config.model,
+        messages: [{ role: "user", content: prompt }],
+        max_tokens: @config.max_tokens,
+        temperature: @config.temperature
       )
 
-      result = response.dig("choices", 0, "message", "content")&.strip&.downcase
-      result == "true"
+      parse_response(response)
     rescue => e
       raise "VibeIf evaluation failed: #{e.message}"
     end
 
     private
 
+    def validate_configuration
+      return if @config.openai_api_key
+
+      raise "OpenAI API key not configured. Use VibeIf.configure to set it."
+    end
+
+    def openai_client
+      @openai_client ||= OpenAI::Client.new(api_key: @config.openai_api_key)
+    end
+
     def extract_variables
       variables = {}
       
-      # Extract instance variables
       @context_object.instance_variables.each do |var|
-        var_name = var.to_s.gsub('@', '')
-        var_value = @context_object.instance_variable_get(var)
-        variables[var_name] = serialize_value(var_value)
+        name = var.to_s.delete('@')
+        value = @context_object.instance_variable_get(var)
+        variables[name] = serialize_value(value)
       end
-
-      # Extract local variables from the calling context
-      # Note: This is limited by Ruby's scope, so we'll focus on instance variables
-      # and any explicitly passed context
       
       variables
     end
@@ -58,16 +60,21 @@ module VibeIf
       end
     end
 
-    def build_prompt(condition_description, variables_data)
-      variables_json = variables_data.map { |k, v| "#{k}: #{v.inspect}" }.join(", ")
+    def build_prompt(condition_description, variables)
+      variables_text = variables.map { |k, v| "#{k}: #{v.inspect}" }.join(", ")
       
       <<~PROMPT
-        Given these variables: #{variables_json}
+        Given these variables: #{variables_text}
         
         Evaluate this condition: "#{condition_description}"
         
         Respond with exactly "true" or "false" (lowercase, no quotes, no explanation).
       PROMPT
+    end
+
+    def parse_response(response)
+      result = response.choices.first.message.content&.strip&.downcase
+      result == "true"
     end
   end
 end

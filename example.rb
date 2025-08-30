@@ -2,7 +2,6 @@
 
 require_relative 'lib/vibe_if'
 
-# Configure VibeIf with your OpenAI API key
 VibeIf.configure do |config|
   config.openai_api_key = ENV['OPENAI_API_KEY']
 end
@@ -19,15 +18,15 @@ class BlogPost
     puts "Analyzing post: #{@title}"
     
     vibe_if "the post is popular and engaging" do
-      puts "✅ Promoting this post!"
+      puts "Promoting this post!"
     end
 
     vibe_if "the post has low engagement or seems spammy" do
-      puts "⚠️  Flagging for review"
+      puts "Flagging for review"
     end
 
     vibe_if "the author has high karma and the post has good metrics" do
-      puts "🌟 Adding to featured posts"
+      puts "Adding to featured posts"
     end
   end
 end
@@ -41,24 +40,23 @@ class User
   end
 
   def send_notifications
-    puts "\nChecking user: #{@name}"
+    puts "Checking user: #{@name}"
     
     vibe_if "user is young and hasn't logged in recently" do
-      puts "📱 Sending re-engagement notification"
+      puts "Sending re-engagement notification"
     end
 
     vibe_if "user is a premium subscriber" do
-      puts "💎 Sending exclusive content update"
+      puts "Sending exclusive content update"
     end
 
     vibe_if "user might be churning based on their activity" do
-      puts "🎯 Sending retention campaign"
+      puts "Sending retention campaign"
     end
   end
 end
 
-# Example usage
-if ENV['OPENAI_API_KEY']
+def run_examples
   post1 = BlogPost.new("10 Ruby Tips", 1500, 25, 850)
   post1.moderate_content
 
@@ -70,6 +68,10 @@ if ENV['OPENAI_API_KEY']
 
   user2 = User.new("Bob", 35, "premium", 1)
   user2.send_notifications
+end
+
+if ENV['OPENAI_API_KEY']
+  run_examples
 else
   puts "Please set OPENAI_API_KEY environment variable to run this example"
 end
