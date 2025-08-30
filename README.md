@@ -69,6 +69,10 @@ Set your OpenAI API key:
 export OPENAI_API_KEY="your-openai-api-key-here"
 ```
 
+## Inspiration
+
+This gem was inspired by [vibesort](https://github.com/abyesilyurt/vibesort), a Python library that uses GPT for AI-powered array sorting.
+
 ## License
 
 The gem is available as open source under the [MIT License](LICENSE).

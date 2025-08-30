@@ -7,13 +7,12 @@ Gem::Specification.new do |spec|
   spec.email   = ["daniel.bengl@renuo.ch"]
 
   spec.summary     = "GPT-powered conditional execution based on variable values"
-  spec.description = "A Ruby gem that uses OpenAI to evaluate instance variables and local variables, returning true/false to conditionally execute code blocks"
+  spec.description = "A Ruby gem that uses OpenAI to evaluate instance variables and local variables, returning true/false to conditionally execute code blocks. Inspired by vibesort (https://github.com/abyesilyurt/vibesort)."
   spec.homepage    = "https://github.com/CuddlyBunion341/vibe-if"
   spec.license     = "MIT"
 
   spec.metadata = {
     "homepage_uri"    => spec.homepage,
-    "source_code_uri" => "https://github.com/CuddlyBunion341/vibe-if"
   }
 
   spec.files = Dir.chdir(File.expand_path(__dir__)) do
