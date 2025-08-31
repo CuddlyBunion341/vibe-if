@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    vibe-if (0.1.1)
+    vibe_if (0.1.1)
       openai (~> 0.19)
 
 GEM
@@ -32,7 +32,7 @@ PLATFORMS
 DEPENDENCIES
   rake (~> 13.0)
   rspec (~> 3.12)
-  vibe-if!
+  vibe_if!
 
 BUNDLED WITH
    2.7.1

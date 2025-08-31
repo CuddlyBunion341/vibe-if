@@ -7,7 +7,7 @@ A Ruby gem that uses OpenAI to evaluate your instance variables and conditionall
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'vibe-if'
+gem 'vibe_if'
 ```
 
 And then execute:
@@ -17,7 +17,7 @@ $ bundle install
 
 Or install it yourself as:
 ```bash
-$ gem install vibe-if
+$ gem install vibe_if
 ```
 
 ## Setup
