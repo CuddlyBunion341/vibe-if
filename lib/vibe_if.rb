@@ -1,6 +1,6 @@
-require_relative "vibe_if/version"
-require_relative "vibe_if/configuration"
-require_relative "vibe_if/evaluator"
+require "vibe_if/version"
+require "vibe_if/configuration"
+require "vibe_if/evaluator"
 
 module VibeIf
   class << self
