@@ -94,14 +94,19 @@ module VibeIf
     end
 
     def build_prompt(condition_description, variables)
-      variables_text = variables.map { |k, v| "#{k}: #{v.inspect}" }.join(", ")
+      variables_text = variables.map { |k, v| "#{k}: #{v.inspect}" }.join("\n")
       
       <<~PROMPT
-        Given these variables: #{variables_text}
-        
-        Evaluate this condition: "#{condition_description}"
-        
-        Respond with exactly "true" or "false" (lowercase, no quotes, no explanation).
+        You are evaluating whether a condition is true based on the given data.
+
+        Object data:
+        #{variables_text}
+
+        Condition to evaluate: "#{condition_description}"
+
+        Consider the context and meaning carefully. For content quality, look for evidence-based information, credible sources, and reasonable claims. For sentiment, consider tone and subtext beyond surface words.
+
+        Respond with exactly "true" or "false" (no quotes, no explanation).
       PROMPT
     end
 
